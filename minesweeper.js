@@ -35,15 +35,19 @@ function Board(n, mines){
 
 // Constants
 const boardSize = 18 // turn this into buttons
-const numMines = 1 // turn this into buttons
+const numMines = 2 // turn this into buttons
 
 // Setup
 //if (boardSize > 0 && Math.sqrt(boardSize) % 1 === 0){
 var board = new Board(boardSize, numMines)
-console.log(board.cells)
-//var mineCell = getRandomInt(0,boardSize-1) RANDOM MINE LOCATION - add as board method when
-var mineCell = 0
-board.cells[mineCell].setMine()
+
+for (var i = 0; i < numMines; i++){
+  var mineCell = getRandomInt(0,boardSize-1)
+  while (board.cells[mineCell].isMine){
+    mineCell = getRandomInt(0,boardSize-1)
+  }
+  board.cells[mineCell].setMine()
+}
 
 //console.log("MINECELL index: "+mineCell)
 //console.log(board.cells[mineCell])
@@ -55,6 +59,8 @@ function startGame () {
   }
   // Don't remove this function call: it makes the game work!
   lib.initBoard()
+  document.addEventListener('click', checkForWin)
+  document.addEventListener('contextmenu', checkForWin)
 }
 
 // Define this function to look for a win condition:
@@ -62,15 +68,12 @@ function startGame () {
 // 1. Are all of the cells that are NOT mines visible?
 // 2. Are all of the mines marked?
 function checkForWin () {
-// var unhiddenCells = board.cells.filter(cell => {
-//   return ((cell.isMine === false && cell.isHidden === false) || (cell.isMine === true && cell.isMarked === true))
-// })
-// console.log("Unhidden Cells w no mines: "+unhiddenCells)
-//
-// if (unhiddenCells === boardSize) {
-//   console.log("Game Won!")
-// lib.displayMessage('You win!')
-// }
+var unhiddenCells = board.cells.filter(cell => {
+  return ((cell.isMine && !cell.isMarked) || (!cell.isMine && cell.isHidden))
+})
+if (unhiddenCells.length === 0) {
+  lib.displayMessage('You win!')
+  }
 }
 
 // Define this function to count the number of mines around the cell
