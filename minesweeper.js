@@ -34,8 +34,8 @@ function Board(n, mines){
 }
 
 // Constants
-const boardSize = 25 // turn this into buttons
-const numMines = 4 // turn this into buttons
+const boardSize = 36 // turn this into buttons
+const numMines = 6 // turn this into buttons
 
 // Setup
 //if (boardSize > 0 && Math.sqrt(boardSize) % 1 === 0){
